@@ -8,25 +8,27 @@ namespace DeToDo.TodoRedux.Reducers
 {
     public static class TodoReducer
     {
-        public static TodoState Execute(TodoState state, IAction action)
+        public static TodoState Execute(TodoState previousState, IAction action)
         {
             switch (action)
             {
-                case NewTodoAction newTodo:
+                case AddTodoAction newTodo:
                     var todo = new TodoItem()
                     {
-                        Id = newTodo.Id,
+                        Id = Guid.NewGuid(),
                         Text = newTodo.Text
                     };
-                    state.Todos.Add(todo);
+                    previousState.Todos.Add(todo);
                     break;
-                case DeleteTodoAction d:
-                    var todoToDelete = state.Todos
-                        .FirstOrDefault(t => t.Id == d.Id);
-                    state.Todos.Remove(todoToDelete);
+                case DelTodoAction d:
+                    var todoToDelete = previousState.Todos
+                        .FirstOrDefault(t => t.Id == d.TodoId);
+                    previousState.Todos.Remove(todoToDelete);
                     break;
             }
-            return state;
+            return previousState;
+
+
         }
     }
 }

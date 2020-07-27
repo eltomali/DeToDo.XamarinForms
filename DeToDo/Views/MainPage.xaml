@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="DeToDo.MainPage"
+             x:Class="DeToDo.Views.MainPage"
              BackgroundColor="White">
   <Grid Margin="0,50,0,0">
     <Grid.RowDefinitions>
@@ -12,13 +12,18 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
     <StackLayout Grid.Row="0">
-      <Entry x:Name="TodoText" Placeholder="Write your todo here" />
-      <Button Text="Add Todo" />
+      <Entry x:Name="TodoEntryText" Placeholder="Write your todo here" Completed="AddTodoButton_Clicked"/>
+      <Button Text="Add Todo" Clicked="AddTodoButton_Clicked" />
     </StackLayout>
-    <ListView Grid.Row="1" x:Name="TodosItemsControl">
+    <ListView Grid.Row="1" x:Name="TodosItemsControl" VerticalOptions="FillAndExpand" SelectionMode="None">
       <ListView.ItemTemplate>
         <DataTemplate>
-          <TextCell Text="{Binding todo}" />
+          <ViewCell Tapped="DeleteTodo">
+            <StackLayout Orientation="Horizontal">
+              <Label Text="{Binding Text}" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+              
+            </StackLayout>
+          </ViewCell>
         </DataTemplate>
       </ListView.ItemTemplate>
     </ListView>
