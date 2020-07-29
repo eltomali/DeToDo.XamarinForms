@@ -10,19 +10,36 @@ namespace DeToDo
 {
     public partial class App : Application
     {
+        
         public static Store<TodoState> TodoStore { get; private set; }
+
+        public static string DatabaseLocation = string.Empty;
 
         public App()
         {
             InitializeComponent();
 
-            TodoStore = new Store<TodoState>(
-               TodoReducer.Execute,
-               new TodoState());
+            //TodoStore = new Store<TodoState>(
+            //   TodoReducer.Execute,
+            //   new TodoState());
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
+        public App(string databaseLocation)
+        {
+            InitializeComponent();
+
+            MainPage = new NavigationPage( new MainPage());
+
+            DatabaseLocation = databaseLocation;
+
+            //TodoStore = new Store<TodoState>(
+            //   TodoReducer.Execute,
+            //   new TodoState());
+
+        }
+       
         protected override void OnStart()
         {
         }
