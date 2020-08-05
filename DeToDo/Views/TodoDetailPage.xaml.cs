@@ -31,8 +31,6 @@ namespace DeToDo.Views
 
         async void DeleteButton_Clicked(System.Object sender, System.EventArgs e)
         {
-            //if (!(sender != null && sender is Button del)) return;
-            //if (!(del.BindingContext is TodoItem todoItem)) return;
             await App.TodoStore.DispatchAsync(ActionCreators.DeleteTodoAsync(selectedTodo));
             await Navigation.PopAsync();
         }

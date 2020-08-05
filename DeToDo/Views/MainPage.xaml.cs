@@ -45,12 +45,6 @@ namespace DeToDo.Views
             Navigation.PushAsync(new AddTodoPage());
         }
 
-        //void DeleteTodo(object sender, EventArgs e)
-        //{
-        //    if (!(sender != null && sender is Cell del)) return;
-        //    if (!(del.BindingContext is TodoItem todoItem)) return;
-        //    App.TodoStore.Dispatch(new DelTodoAction(todoItem.Id));
-        //}
 
         protected override async void OnAppearing()
         {

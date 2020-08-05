@@ -30,8 +30,10 @@ namespace DeToDo.TodoRedux.Actions
     public class UpdateTodoAction : IAction
     {
         public string Text { get; }
-        public UpdateTodoAction(string text)
+        public Guid Id { get; }
+        public UpdateTodoAction(string text, Guid id)
         {
+            Id = id;
             Text = text;
         }
 

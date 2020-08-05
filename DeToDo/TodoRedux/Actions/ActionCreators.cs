@@ -92,8 +92,9 @@ namespace DeToDo.TodoRedux.Actions
                     await conn.CreateTableAsync<TodoItem>();
                     int rows = await conn.UpdateAsync(updatedTodo);
 
-                    dispatch(new UpdateTodoAction(updatedTodo.Text));
+                    dispatch(new UpdateTodoAction(updatedTodo.Text, updatedTodo.Id));
                     await conn.CloseAsync();
+                    Console.Write(getState());
                 }
                 catch (Exception ex)
                 {
