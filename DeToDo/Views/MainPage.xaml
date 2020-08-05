@@ -27,16 +27,12 @@
       <ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell >
-            <StackLayout Orientation="Horizontal">
-              <Label Text="{Binding Text}"
-                     HorizontalOptions="FillAndExpand"
-                     VerticalOptions="Center"/>
-            </StackLayout>
+            <Label Text="{Binding Text}"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Center"/>
           </ViewCell>
         </DataTemplate>
       </ListView.ItemTemplate>
     </ListView>
-    
-
   </Grid>
 </ContentPage>

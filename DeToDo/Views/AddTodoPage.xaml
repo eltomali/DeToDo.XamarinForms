@@ -6,6 +6,6 @@
       <Entry x:Name="todoEntryText"
              Placeholder="Write your todo here"
              Completed="AddTodoButton_Clicked"/>
-      <Button Text="Add Todo" Clicked="AddTodoButton_Clicked" />
+      <Button Text="Add Todo" Clicked="AddTodoButton_Clicked" Margin="0,20,0,0" />
     </StackLayout>
 </ContentPage>
