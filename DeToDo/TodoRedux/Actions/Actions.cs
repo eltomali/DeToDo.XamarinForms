@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DeToDo.Models;
 using Redux;
@@ -8,27 +7,23 @@ namespace DeToDo.TodoRedux.Actions
 {
     public class AddTodoAction: IAction
     {
+        public Guid Id { get; }
+        public string Text { get; }
+
         public AddTodoAction(Guid id, string text)
         {
             Id = id;
             Text = text;
-        }
-
-        public Guid Id {get; }
-        public string Text { get; }
+        }        
     }
     public class DelTodoAction : IAction
     {
-
+        public Guid Id { get; }
         public DelTodoAction(Guid id)
         {
             Id = id;
         }
-
-        public Guid Id { get;  }
     }
-
-
     public class LoadTodosAction: IAction {
         public ObservableCollection<TodoItem> Todos;
         public LoadTodosAction(ObservableCollection<TodoItem> todos)
@@ -36,6 +31,4 @@ namespace DeToDo.TodoRedux.Actions
             this.Todos = todos;
         }
     }
-
-
 }

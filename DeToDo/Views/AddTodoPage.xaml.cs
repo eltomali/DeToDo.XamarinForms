@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using DeToDo.Models;
 using DeToDo.TodoRedux;
 using DeToDo.TodoRedux.Actions;
-using SQLite;
 using Xamarin.Forms;
 
 namespace DeToDo.Views
@@ -17,13 +14,12 @@ namespace DeToDo.Views
 
         async void AddTodoButton_Clicked(object sender, EventArgs e)
         {
-            if (TodoEntryText.Text == "")
+            if (todoEntryText.Text == "")
             {
                 return;
             }
-
-            await App.TodoStore.DispatchAsync(ActionCreators.AddTodoAsync(TodoEntryText.Text)); 
-            TodoEntryText.Text = "";
+            await App.TodoStore.DispatchAsync(ActionCreators.AddTodoAsync(todoEntryText.Text)); 
+            todoEntryText.Text = "";
             await Navigation.PopAsync();
         }
     }

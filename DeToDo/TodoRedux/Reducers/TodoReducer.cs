@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Redux;
 using DeToDo.Models;
 using DeToDo.TodoRedux.Actions;
-using System.Collections.ObjectModel;
 
 namespace DeToDo.TodoRedux.Reducers
 {
@@ -26,15 +24,11 @@ namespace DeToDo.TodoRedux.Reducers
                         .FirstOrDefault(t => t.Id == d.Id);
                     previousState.Todos.Remove(todoToDelete);
                     break;
-                    
                 case LoadTodosAction l:
                     previousState.Todos = l.Todos;
                     break;
-
             }
             return previousState;
-
-
         }
     }
 }

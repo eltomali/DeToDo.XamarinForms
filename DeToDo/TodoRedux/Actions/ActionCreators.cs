@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using DeToDo.Models;
 using Redux;
 using SQLite;
-using Xamarin.Forms;
 
 namespace DeToDo.TodoRedux.Actions
 {
@@ -63,7 +62,6 @@ namespace DeToDo.TodoRedux.Actions
         {
             return async (dispatch, getState) =>
             {
-                
                 try
                 {
                     SQLiteAsyncConnection conn = new SQLiteAsyncConnection(App.DatabaseLocation);
