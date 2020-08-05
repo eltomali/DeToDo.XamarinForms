@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using DeToDo.Models;
+using DeToDo.TodoRedux;
+using DeToDo.TodoRedux.Actions;
 using SQLite;
 using Xamarin.Forms;
 
@@ -18,44 +20,21 @@ namespace DeToDo.Views
             todoEntry.Text = selectedTodo.Text;
         }
 
-        void UpdateButton_Clicked(System.Object sender, System.EventArgs e)
+        async void UpdateButton_Clicked(System.Object sender, System.EventArgs e)
         {
             selectedTodo.Text = todoEntry.Text;
 
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                conn.CreateTable<TodoItem>();
-                int rows = conn.Update(selectedTodo);
 
-                //if (rows > 0)
-                //{
-                //    DisplayAlert("Success", "Todo succesfully updated", "Ok");
-                //}
-                //else
-                //{
-                //    DisplayAlert("Failure", "Todo not updated", "Ok");
-                //}
-                Navigation.PopAsync();
-            }
+            await App.TodoStore.DispatchAsync(ActionCreators.UpdateTodoAsync(selectedTodo));
+            await Navigation.PopAsync();
         }
 
-        void DeleteButton_Clicked(System.Object sender, System.EventArgs e)
+        async void DeleteButton_Clicked(System.Object sender, System.EventArgs e)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                conn.CreateTable<TodoItem>();
-                int rows = conn.Delete(selectedTodo);
-
-                //if (rows > 0)
-                //{
-                //    DisplayAlert("Success", "Todo succesfully deleted", "Ok");
-                //}
-                //else
-                //{
-                //    DisplayAlert("Failure", "Todo not deleted", "Ok");
-                //}
-                Navigation.PopAsync();
-            }
+            //if (!(sender != null && sender is Button del)) return;
+            //if (!(del.BindingContext is TodoItem todoItem)) return;
+            await App.TodoStore.DispatchAsync(ActionCreators.DeleteTodoAsync(selectedTodo));
+            await Navigation.PopAsync();
         }
     }
 }

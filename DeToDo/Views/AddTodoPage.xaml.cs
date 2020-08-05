@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DeToDo.Models;
+using DeToDo.TodoRedux;
 using DeToDo.TodoRedux.Actions;
 using SQLite;
 using Xamarin.Forms;
@@ -14,38 +15,16 @@ namespace DeToDo.Views
             InitializeComponent();
         }
 
-        void AddTodoButton_Clicked(object sender, EventArgs e)
+        async void AddTodoButton_Clicked(object sender, EventArgs e)
         {
             if (TodoEntryText.Text == "")
             {
                 return;
             }
 
-            //App.TodoStore.Dispatch(new AddTodoAction(TodoEntryText.Text));
-
-            TodoItem todoItem = new TodoItem()
-            {
-                Id = Guid.NewGuid(),
-                Text = TodoEntryText.Text
-            };
-
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                conn.CreateTable<TodoItem>();
-                int rows = conn.Insert(todoItem);
-
-                //if (rows > 0)
-                //{
-                //    DisplayAlert("Success", "Todo succesfully inserted", "Ok");
-                //}
-                //else
-                //{
-                //    DisplayAlert("Failure", "Todo not inserted", "Ok");
-                //}
-            }
-
+            await App.TodoStore.DispatchAsync(ActionCreators.AddTodoAsync(TodoEntryText.Text)); 
             TodoEntryText.Text = "";
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
     }
 }

@@ -6,7 +6,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DeToDo.Models;
+using DeToDo.TodoRedux;
 using DeToDo.TodoRedux.Actions;
+using Redux;
 using SQLite;
 using Xamarin.Forms;
 
@@ -18,22 +20,24 @@ namespace DeToDo.Views
     public partial class MainPage : ContentPage
     {
         public List<TodoItem> Todos { get; set; }
-        public MainPage()
+        private readonly IStore<TodoState> _store;
+
+        public MainPage():this(App.TodoStore)
+        {
+        }
+
+        public MainPage(IStore<TodoState> store)
         {
             InitializeComponent();
+            _store = store;
 
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            store.Subscribe(state =>
             {
-                conn.CreateTable<TodoItem>();
-                Todos = conn.Table<TodoItem>().ToList();
-                TodosItemsControl.ItemsSource = Todos;
-            }
+                TodoItems.IsRefreshing = state.isLoading;
+                Todos = state.Todos;
+                TodoItems.ItemsSource = state.Todos;
 
-            //App.TodoStore.Subscribe(state =>
-            //{
-            //    Todos = state.Todos.ToList();
-            //    TodosItemsControl.ItemsSource = Todos;
-            //});
+            });
         }
 
         void AddTodoToolbar_Clicked(object sender, EventArgs e)
@@ -41,33 +45,24 @@ namespace DeToDo.Views
             Navigation.PushAsync(new AddTodoPage());
         }
 
-        void DeleteTodo(object sender, EventArgs e)
-        {
-            if (!(sender != null && sender is Cell del)) return;
-            if (!(del.BindingContext is TodoItem todoItem)) return;
-            App.TodoStore.Dispatch(new DelTodoAction(todoItem.Id));
-        }
+        //void DeleteTodo(object sender, EventArgs e)
+        //{
+        //    if (!(sender != null && sender is Cell del)) return;
+        //    if (!(del.BindingContext is TodoItem todoItem)) return;
+        //    App.TodoStore.Dispatch(new DelTodoAction(todoItem.Id));
+        //}
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                conn.CreateTable<TodoItem>();
-                Todos = conn.Table<TodoItem>().ToList();
-                TodosItemsControl.ItemsSource = Todos;
-            }
-            
+            await _store.DispatchAsync(ActionCreators.LoadTodosAsync());
         }
 
         void TodosItemsControl_ItemSelected(System.Object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
-            //if (!(sender != null && sender is Cell del)) return;
-            //if (!(del.BindingContext is TodoItem todoItem)) return;
-            //App.TodoStore.Dispatch(new DelTodoAction(todoItem.Id));
 
-            var selectedTodo = TodosItemsControl.SelectedItem as TodoItem;
-            if(selectedTodo != null)
+            var selectedTodo = TodoItems.SelectedItem as TodoItem;
+            if (selectedTodo != null)
             {
                 Navigation.PushAsync(new TodoDetailPage(selectedTodo));
             }

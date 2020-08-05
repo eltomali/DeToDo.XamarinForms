@@ -15,15 +15,27 @@ namespace DeToDo.TodoRedux.Reducers
                 case AddTodoAction newTodo:
                     var todo = new TodoItem()
                     {
-                        Id = Guid.NewGuid(),
+                        Id = newTodo.Id,
                         Text = newTodo.Text
                     };
                     previousState.Todos.Add(todo);
                     break;
                 case DelTodoAction d:
                     var todoToDelete = previousState.Todos
-                        .FirstOrDefault(t => t.Id == d.TodoId);
+                        .FirstOrDefault(t => t.Id == d.Id);
                     previousState.Todos.Remove(todoToDelete);
+                    break;
+                case LoadTodosAction l:
+                    previousState.isLoading = true;
+                    break;
+                
+                case LoadTodosSuccessAction s:
+                    previousState.Todos = s.Todos.ToList();
+                    previousState.isLoading = false;
+                    break;
+
+                case TodosErrorAction e:
+                    previousState.isLoading = false;
                     break;
             }
             return previousState;

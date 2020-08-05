@@ -30,13 +30,15 @@ namespace DeToDo
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage( new MainPage());
+            
 
             DatabaseLocation = databaseLocation;
 
             //TodoStore = new Store<TodoState>(
             //   TodoReducer.Execute,
             //   new TodoState());
+            TodoStore = new Store<TodoState>(TodoReducer.Execute, TodoState.InitialState);
+            MainPage = new NavigationPage(new MainPage());
 
         }
        

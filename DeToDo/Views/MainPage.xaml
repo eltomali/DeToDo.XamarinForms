@@ -9,7 +9,7 @@
   <ContentPage.ToolbarItems>
     <ToolbarItem Text="Add Todo" Clicked="AddTodoToolbar_Clicked" />
   </ContentPage.ToolbarItems>
-  <Grid>
+  <Grid Margin="30,0">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*" />
@@ -17,7 +17,7 @@
     <StackLayout>
       <Label Text="My Todos" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,10" />
     </StackLayout>
-    <ListView Grid.Row="1" x:Name="TodosItemsControl" VerticalOptions="FillAndExpand" ItemSelected="TodosItemsControl_ItemSelected">
+    <ListView Grid.Row="1" x:Name="TodoItems" VerticalOptions="FillAndExpand" ItemSelected="TodosItemsControl_ItemSelected">
       <ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell >
