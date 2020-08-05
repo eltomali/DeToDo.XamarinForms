@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DeToDo.Models
 {
@@ -7,12 +8,12 @@ namespace DeToDo.Models
     {
         public bool isLoading { get; set; }
 
-        public List<TodoItem> Todos { get; set; } = new List<TodoItem>();
+        public ObservableCollection<TodoItem> Todos { get; set; } = new ObservableCollection<TodoItem>();
 
         public static TodoState InitialState => new TodoState()
         {
             isLoading = false,
-            Todos = new List<TodoItem>()
+            Todos = new ObservableCollection<TodoItem>()
         };
     }
 }

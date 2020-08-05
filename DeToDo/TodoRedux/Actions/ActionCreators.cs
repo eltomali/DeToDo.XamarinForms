@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using DeToDo.Models;
 using Redux;
@@ -15,20 +16,19 @@ namespace DeToDo.TodoRedux.Actions
         {
             return async (dispatch, getState) =>
             {
-                dispatch(new LoadTodosAction());
-
                 try
                 {
                     SQLiteAsyncConnection conn = new SQLiteAsyncConnection(App.DatabaseLocation);
                     
                     await conn.CreateTableAsync<TodoItem>();
                     var todos = await conn.Table<TodoItem>().ToListAsync();
-                    dispatch(new LoadTodosSuccessAction(todos));
+                    ObservableCollection<TodoItem> todosCollection = new ObservableCollection<TodoItem>(todos); 
+                    dispatch(new LoadTodosAction(todosCollection));
                     await conn.CloseAsync();
                 }
                 catch (Exception ex)
                 {
-                    dispatch(new TodosErrorAction(ex.ToString()));
+                    throw ex;
                 }
             };
         }
@@ -54,7 +54,7 @@ namespace DeToDo.TodoRedux.Actions
                 }
                 catch (Exception ex)
                 {
-                    dispatch(new TodosErrorAction(ex.ToString()));
+                    throw ex;
                 }
             };
         }
@@ -76,31 +76,11 @@ namespace DeToDo.TodoRedux.Actions
                 }
                 catch (Exception ex)
                 {
-                    dispatch(new TodosErrorAction(ex.ToString()));
+                    throw ex;
                 }
             };
         }
 
-        public static AsyncActionCreators<TodoState> UpdateTodoAsync(TodoItem updatedTodo)
-        {
-            return async (dispatch, getState) =>
-            {
-                try
-                {
-                    SQLiteAsyncConnection conn = new SQLiteAsyncConnection(App.DatabaseLocation);
-
-                    await conn.CreateTableAsync<TodoItem>();
-                    int rows = await conn.UpdateAsync(updatedTodo);
-
-                    dispatch(new UpdateTodoAction(updatedTodo.Text, updatedTodo.Id));
-                    await conn.CloseAsync();
-                    Console.Write(getState());
-                }
-                catch (Exception ex)
-                {
-                    dispatch(new TodosErrorAction(ex.ToString()));
-                }
-            };
-        }
+      
     }
 }

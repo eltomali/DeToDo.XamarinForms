@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -19,7 +20,7 @@ namespace DeToDo.Views
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
-        public List<TodoItem> Todos { get; set; }
+        public ObservableCollection<TodoItem> Todos { get; set; }
         private readonly IStore<TodoState> _store;
 
         public MainPage():this(App.TodoStore)
@@ -49,16 +50,17 @@ namespace DeToDo.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            
             await _store.DispatchAsync(ActionCreators.LoadTodosAsync());
         }
 
-        void TodosItemsControl_ItemSelected(System.Object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        async void TodosItemsControl_ItemSelected(System.Object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
-
+            // DELETE ITEM WHEN SELECTED
             var selectedTodo = TodoItems.SelectedItem as TodoItem;
             if (selectedTodo != null)
             {
-                Navigation.PushAsync(new TodoDetailPage(selectedTodo));
+                await _store.DispatchAsync(ActionCreators.DeleteTodoAsync(selectedTodo));
             }
         }
 
